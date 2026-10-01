@@ -1,0 +1,6 @@
+{
+  "name": "GenLayer NFT Studio",
+  "description": "Deploy ERC-721 NFT smart contracts and mint NFTs directly on GenLayer Testnet with Rabby and MetaMask.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

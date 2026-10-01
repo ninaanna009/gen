@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GenLayer NFT Studio | Deploy & Mint on GenLayer Testnet</title>
+    <meta name="description" content="Deploy ERC-721 NFT smart contracts and mint NFTs directly on GenLayer Testnet with Rabby and MetaMask." />
+    <meta property="og:title" content="GenLayer NFT Studio | Deploy & Mint on GenLayer Testnet" />
+    <meta property="og:description" content="Deploy ERC-721 NFT smart contracts and mint NFTs directly on GenLayer Testnet with Rabby and MetaMask." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script>
+      // Fix for Web3 wallets (Rabby, MetaMask) monkey-patching window.fetch in iframe environments
+      (function() {
+        try {
+          var originalFetch = window.fetch ? window.fetch.bind(window) : null;
+          var activeFetch = originalFetch;
+
+          // Attempt to redefine fetch on window with both getter and setter
+          try {
+            Object.defineProperty(window, 'fetch', {
+              get: function() {
+                return activeFetch || originalFetch;
+              },
+              set: function(fn) {
+                activeFetch = fn;
+              },
+              configurable: true,
+              enumerable: true,
+            });
+          } catch (e1) {
+            try {
+              Object.defineProperty(Window.prototype, 'fetch', {
+                get: function() {
+                  return activeFetch || originalFetch;
+                },
+                set: function(fn) {
+                  activeFetch = fn;
+                },
+                configurable: true,
+                enumerable: true,
+              });
+            } catch (e2) {}
+          }
+        } catch (e) {}
+
+        // Global safeguard against unhandled errors from wallet extensions attempting to write to read-only fetch
+        window.addEventListener('error', function(event) {
+          if (
+            event &&
+            event.message &&
+            (event.message.indexOf('fetch of #<Window>') !== -1 ||
+             event.message.indexOf("read only property 'fetch'") !== -1)
+          ) {
+            if (typeof event.preventDefault === 'function') event.preventDefault();
+            if (typeof event.stopImmediatePropagation === 'function') event.stopImmediatePropagation();
+            return true;
+          }
+        }, true);
+      })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
